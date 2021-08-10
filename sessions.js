@@ -75,7 +75,9 @@ module.exports = class Sessions {
                     'secret-key': Sessions.options.jsonbinio_secret_key
                 }
             };
+
             const response = await axios(config);
+
             if (response.data.WAToken1 !== undefined) {
                 session.browserSessionToken = response.data;
                 console.log("puxou isso: " + JSON.stringify(session.browserSessionToken));
@@ -94,46 +96,12 @@ module.exports = class Sessions {
                 (statusSession, session) => {
                     console.log('#### status=' + statusSession + ' sessionName=' + session);
                 }, {
-                folderNameToken: 'tokens',
-                headless: true,
-                devtools: false,
-                useChrome: false,
-                debug: false,
-                logQR: true,
-                browserArgs: [
-                    '--log-level=3',
-                    '--no-default-browser-check',
-                    '--disable-site-isolation-trials',
-                    '--no-experiments',
-                    '--ignore-gpu-blacklist',
-                    '--ignore-certificate-errors',
-                    '--ignore-certificate-errors-spki-list',
-                    '--disable-gpu',
-                    '--disable-extensions',
-                    '--disable-default-apps',
-                    '--enable-features=NetworkService',
-                    '--disable-setuid-sandbox',
-                    '--no-sandbox',
-                    // Extras
-                    '--disable-webgl',
-                    '--disable-threaded-animation',
-                    '--disable-threaded-scrolling',
-                    '--disable-in-process-stack-traces',
-                    '--disable-histogram-customizer',
-                    '--disable-gl-extensions',
-                    '--disable-composited-antialiasing',
-                    '--disable-canvas-aa',
-                    '--disable-3d-apis',
-                    '--disable-accelerated-2d-canvas',
-                    '--disable-accelerated-jpeg-decoding',
-                    '--disable-accelerated-mjpeg-decode',
-                    '--disable-app-list-dismiss-on-blur',
-                    '--disable-accelerated-video-decode',
-                ],
+                folderNameToken: 'tokens',              
+                logQR: true,              
                 refreshQR: 15000,
-                autoClose: 60000,
+                autoClose: 120000,
                 disableSpins: true,
-                disableWelcome: false,
+                disableWelcome: true,
                 createPathFileToken: true,
                 waitForLogin: true
             },
@@ -604,7 +572,6 @@ module.exports = class Sessions {
 
     static async checkNumberStatus(sessionName, number) {
         var session = Sessions.getSession(sessionName);
-        //console.log(sessionName+number);
         if (session) {
             if (session.state == "CONNECTED") {
                 var resultcheckNumberStatus = await session.client.then(async (client) => {
@@ -629,7 +596,6 @@ module.exports = class Sessions {
 
     static async getNumberProfile(sessionName, number) {
         var session = Sessions.getSession(sessionName);
-        //console.log(sessionName+number);
         if (session) {
             if (session.state == "CONNECTED") {
                 var resultgetNumberProfile = await session.client.then(async (client) => {

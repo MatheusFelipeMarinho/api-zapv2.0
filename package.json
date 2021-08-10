@@ -9,12 +9,12 @@
     "author": "Bill Barsch",
     "license": "ISC",
     "dependencies": {
-        "@wppconnect-team/wppconnect": "^*",
+        "@wppconnect-team/wppconnect": "^1.8.12",
         "axios": "^0.21.1",
         "cors": "^2.8.5",
-        "dotenv": "^8.2.0",
+        "dotenv": "^8.6.0",
         "express": "^4.17.1",
         "mime": "^2.5.2",
-        "venom-bot": "^3.0.11"
+        "venom-bot": "^3.0.21"
     }
 }
