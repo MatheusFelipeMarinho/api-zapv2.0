@@ -17,7 +17,7 @@ app.use(express.json({
     extended: true
 }));
 
-var appPort = process.env.PORT ? process.env.PORT : 3333;
+var appPort = process.env.PORT ? process.env.PORT : 8080;
 
 if (process.env.HTTPS == 1) { //with ssl
     https.createServer(
@@ -57,7 +57,6 @@ app.get("/start", async (req, res, next) => {
 
 app.get("/status", async (req, res, next) => {
     var session = await Sessions.getStatus(req.query.sessionName);
-    console.log(session);
     res.status(200).json({
         result: (!session.state) ? 'NOT_FOUND' : session.state
     });
@@ -95,6 +94,7 @@ app.post("/sendHook", async function sendText(req, res, next) {
 });//sendText
 
 app.post("/sendText", async function sendText(req, res, next) {
+
     var result = await Sessions.sendText(req);
     res.json(result);
 });//sendText

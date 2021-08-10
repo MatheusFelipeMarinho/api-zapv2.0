@@ -303,9 +303,9 @@ module.exports = class Sessions {
 
     static async sendText(req) {
         var params = {
-            sessionName: req.body.sessionName,
-            number: req.body.number,
-            text: req.body.text
+            sessionName: req.query.sessionName,
+            number: req.query.number,
+            text: req.query.text
         }
         var session = Sessions.getSession(params.sessionName);
         if (session) {
