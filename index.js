@@ -69,14 +69,13 @@ app.get("/qrcode", async (req, res, next) => {
     if (session != false) {
         if (session.status != 'isLogged') {
             if (req.query.image) {
-                // session.qrcode = session.qrcode.replace('data:image/png;base64,', '');
-                // const imageBuffer = Buffer.from(session.qrcode, 'base64');
-                // res.writeHead(200, {
-                //     'Content-Type': 'image/png',
-                //     'Content-Length': imageBuffer.length
-                // });
-                // res.end(imageBuffer);
-                res.status(200).json({ result: "success", message: session.state, qrcode: session.qrcode });
+                session.qrcode = session.qrcode.replace('data:image/png;base64,', '');
+                const imageBuffer = Buffer.from(session.qrcode, 'base64');
+                res.writeHead(200, {
+                    'Content-Type': 'image/png',
+                    'Content-Length': imageBuffer.length
+                });
+                res.end(imageBuffer);
             } else {
                 res.status(200).json({ result: "success", message: session.state, qrcode: session.qrcode });
             }
