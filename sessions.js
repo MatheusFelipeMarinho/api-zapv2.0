@@ -96,14 +96,48 @@ module.exports = class Sessions {
                 (statusSession, session) => {
                     console.log('#### status=' + statusSession + ' sessionName=' + session);
                 }, {
-                folderNameToken: 'tokens',              
-                logQR: true,              
-                refreshQR: 15000,
-                autoClose: 120000,
-                disableSpins: true,
-                disableWelcome: true,
-                createPathFileToken: true,
-                waitForLogin: true
+                    folderNameToken: 'tokens',
+                    headless: true,
+                    devtools: false,
+                    useChrome: false,
+                    debug: false,
+                    logQR: false,
+                    browserArgs: [
+                        '--log-level=3',
+                        '--no-default-browser-check',
+                        '--disable-site-isolation-trials',
+                        '--no-experiments',
+                        '--ignore-gpu-blacklist',
+                        '--ignore-certificate-errors',
+                        '--ignore-certificate-errors-spki-list',
+                        '--disable-gpu',
+                        '--disable-extensions',
+                        '--disable-default-apps',
+                        '--enable-features=NetworkService',
+                        '--disable-setuid-sandbox',
+                        '--no-sandbox',
+                        // Extras
+                        '--disable-webgl',
+                        '--disable-threaded-animation',
+                        '--disable-threaded-scrolling',
+                        '--disable-in-process-stack-traces',
+                        '--disable-histogram-customizer',
+                        '--disable-gl-extensions',
+                        '--disable-composited-antialiasing',
+                        '--disable-canvas-aa',
+                        '--disable-3d-apis',
+                        '--disable-accelerated-2d-canvas',
+                        '--disable-accelerated-jpeg-decoding',
+                        '--disable-accelerated-mjpeg-decode',
+                        '--disable-app-list-dismiss-on-blur',
+                        '--disable-accelerated-video-decode',
+                    ],
+                    refreshQR: 15000,
+                    autoClose: 120000,
+                    disableSpins: true,
+                    disableWelcome: true,
+                    createPathFileToken: true,
+                    waitForLogin: true
             },
                 session.browserSessionToken
             );
@@ -112,67 +146,7 @@ module.exports = class Sessions {
             session.state = "CONNECTED";
             return client;
         } //initSession
-        if (process.env.ENGINE === 'WPPCONNECT') {
-            const client = await wppconnect.create({
-                session: session.name,
-                catchQR: (base64Qrimg, asciiQR, attempts, urlCode) => {
-                    session.state = "QRCODE";
-                    session.qrcode = base64Qrimg;
-                    session.CodeasciiQR = asciiQR;
-                    session.CodeurlCode = urlCode;
-                },
-                statusFind: (statusSession, session) => {
-                    console.log('- Status da sessão:', statusSession);
-                    console.log('- Session name: ', session);
-                },
-                folderNameToken: 'tokens',
-                headless: true,
-                devtools: false,
-                useChrome: true,
-                debug: false,
-                logQR: true,
-                browserArgs: [
-                    '--log-level=3',
-                    '--no-default-browser-check',
-                    '--disable-site-isolation-trials',
-                    '--no-experiments',
-                    '--ignore-gpu-blacklist',
-                    '--ignore-certificate-errors',
-                    '--ignore-certificate-errors-spki-list',
-                    '--disable-gpu',
-                    '--disable-extensions',
-                    '--disable-default-apps',
-                    '--enable-features=NetworkService',
-                    '--disable-setuid-sandbox',
-                    '--no-sandbox',
-                    // Extras
-                    '--disable-webgl',
-                    '--disable-threaded-animation',
-                    '--disable-threaded-scrolling',
-                    '--disable-in-process-stack-traces',
-                    '--disable-histogram-customizer',
-                    '--disable-gl-extensions',
-                    '--disable-composited-antialiasing',
-                    '--disable-canvas-aa',
-                    '--disable-3d-apis',
-                    '--disable-accelerated-2d-canvas',
-                    '--disable-accelerated-jpeg-decoding',
-                    '--disable-accelerated-mjpeg-decode',
-                    '--disable-app-list-dismiss-on-blur',
-                    '--disable-accelerated-video-decode',
-                ],
-                disableSpins: true,
-                disableWelcome: false,
-                updatesLog: true,
-                autoClose: 60000,
-                createPathFileToken: true,
-                waitForLogin: true,
-
-            });
-            wppconnect.defaultLogger.level = 'silly'
-            session.state = "CONNECTED";
-            return client;
-        }
+ 
     }
     static async setup(sessionName) {
         var session = Sessions.getSession(sessionName);
